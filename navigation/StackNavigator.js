@@ -1,0 +1,222 @@
+//imports 
+import { StyleSheet, Text, View } from "react-native"
+import React, { useContext } from "react"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+
+//Screen imports
+import HomeScreen from "../screens/HomeScreen"
+import LikesScreen from "../screens/LikesScreen"
+import ChatScreen from "../screens/ChatScreen"
+import ProfileScreen from "../screens/ProfileScreen"
+import BasicInfo from "../screens/BasicInfo"
+import EmailScreen from "../screens/EmailScreen"
+import PasswordScreen from "../screens/PasswordScreen"
+import BirthScreen from "../screens/BirthScreen"
+import LocationScreen from "../screens/LocationScreen"
+import GenderScreen from "../screens/GenderScreen"
+import DateType from "../screens/DateType"
+import LookingForScreen from "../screens/LookingFor"
+import HometownScreen from "../screens/HomeTownScreen"
+import PhotoScreen from "../screens/PhotoScreen"
+import PromptsScreen from "../screens/PromptsScreen"
+import PromptShowScreen from "../screens/ShowPromptsScreen"
+import PreFinalScreen from "../screens/PreFinalScreen"
+
+//React Navigation imports
+import { Entypo, Fontisto } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialIcons } from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons"
+import { NavigationContainer } from "@react-navigation/native"
+import NameScreen from "../screens/NameScreen"
+import TypeScreen from "../screens/TypeScreen"
+import ShowPromptsScreen from "../screens/ShowPromptsScreen"
+import { AuthContext } from "../AuthContext"
+
+
+
+//StackNavigator component
+const StackNavigator = () => {
+    const Stack = createNativeStackNavigator();
+    const Tab = createBottomTabNavigator();
+    const { isLoading, token } = useContext(AuthContext);
+
+    //Bottom Tabs Component
+    function BottomTabs() {
+        return (
+            <Tab.Navigator screenOptions={{
+                tabBarShowLabel: false,
+                headerShown: false,
+            }}>
+                <Tab.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                        tabBarStyle: { backgroundColor: "#101010" },
+                        tabBarLabelStyle: { color: "#008E97" },
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) =>
+                            focused ? (
+                                <MaterialCommunityIcons name="alpha" size={35} color="white" />
+
+                            ) : (
+                                <MaterialCommunityIcons name="alpha" size={35} color="#989898" />
+
+                            )
+                    }} />
+                <Tab.Screen
+                    name="Likes"
+                    component={LikesScreen}
+                    options={{
+                        tabBarStyle: { backgroundColor: "#101010" },
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) =>
+                            focused ? (
+                                <Entypo name="heart" size={30} color="white" />
+
+                            ) : (
+                                <Entypo name="heart" size={30} color="#989898" />
+
+                            )
+                    }} />
+                <Tab.Screen
+                    name="Chat"
+                    component={ChatScreen}
+                    options={{
+                        tabBarStyle: { backgroundColor: "#101010" },
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) =>
+                            focused ? (
+                                <MaterialIcons name="chat-bubble-outline" size={30} color="white" />
+
+                            ) : (
+                                <MaterialIcons name="chat-bubble-outline" size={30} color="#989898" />
+
+                            )
+                    }} />
+                <Tab.Screen
+                    name="Profile"
+                    component={ProfileScreen}
+                    options={{
+                        tabBarStyle: { backgroundColor: "#101010" },
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) =>
+                            focused ? (
+                                <Ionicons name="person-circle-outline" size={30} color="white" />
+
+                            ) : (
+                                <Ionicons name="person-circle-outline" size={30} color="#989898" />
+
+                            ),
+                    }} />
+            </Tab.Navigator >
+        );
+    }
+
+    const AuthStack = () => {
+        return (
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="Basic"
+                    component={BasicInfo}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Name"
+                    component={NameScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Email"
+                    component={EmailScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Password"
+                    component={PasswordScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Birth"
+                    component={BirthScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Location"
+                    component={LocationScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Gender"
+                    component={GenderScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Type"
+                    component={TypeScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Dating"
+                    component={DateType}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="LookingFor"
+                    component={LookingForScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Hometown"
+                    component={HometownScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Photos"
+                    component={PhotoScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Prompts"
+                    component={PromptsScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="ShowPrompts"
+                    component={ShowPromptsScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="PreFinal"
+                    component={PreFinalScreen}
+                    options={{ headerShown: false }}
+                />
+
+            </Stack.Navigator>
+        )
+    }
+
+
+    function MainStack() {
+        return (
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="Main"
+                    component={BottomTabs}
+                    options={{ headerShown: false }}
+                />
+            </Stack.Navigator>
+        )
+    }
+    return (
+
+        <NavigationContainer>
+            {token === null || token === '' ? <AuthStack /> : <MainStack />}
+        </NavigationContainer>
+    )
+}
+
+export default StackNavigator;
+
+const styles = StyleSheet.create({});
