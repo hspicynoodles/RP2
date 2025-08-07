@@ -13,14 +13,14 @@ const TypeScreen = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-        getRegistrationProgress('type').then(progressData => {
+        getRegistrationProgress('Type').then(progressData => {
             setType(progressData.type || '');
         })
     }, [])
     const handleNext = () => {
-        navigation.navigate("Dating");
+        navigation.navigate("PreFinal");
         if (type.trim() !== '') {
-            saveRegistrationProcess('type', { type });
+            saveRegistrationProcess('Type', { type });
         }
 
     }
@@ -57,39 +57,38 @@ const TypeScreen = () => {
                     />
                 </View>
                 <Text style={{ fontSize: 25 }}>
-                    What's your sexuality?
+                    What console do you have?
                 </Text>
-                <Text style={{ marginTop: 20, fontSize: 15, color: "gray" }}>Hinge users are matched based on these three gender groups. You can add more about your gender identity if you'd like.</Text>
                 <View style={{ marginTop: 30, flexDirection: "column", gap: 12 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                        <Text style={{ fontSize: 15 }}>Straight</Text>
-                        <Pressable onPress={() => setType("Straight")}>
+                        <Text style={{ fontSize: 15 }}>PS5</Text>
+                        <Pressable onPress={() => setType("PS5")}>
                             <FontAwesome
                                 name="circle"
                                 size={26}
-                                color={type === "Straight" ? "black" : "gray"}
+                                color={type === "PS5" ? "black" : "gray"}
                             />
 
                         </Pressable>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                        <Text style={{ fontSize: 15 }}>Gay</Text>
-                        <Pressable onPress={() => setType("Gay")}>
+                        <Text style={{ fontSize: 15 }}>PC</Text>
+                        <Pressable onPress={() => setType("PC")}>
                             <FontAwesome
                                 name="circle"
                                 size={26}
-                                color={type === "Gay" ? "black" : "gray"}
+                                color={type === "PC" ? "black" : "gray"}
                             />
 
                         </Pressable>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                        <Text style={{ fontSize: 15 }}>Bi-Sexual</Text>
-                        <Pressable onPress={() => setType("Bi-Sexual")}>
+                        <Text style={{ fontSize: 15 }}>Xbox</Text>
+                        <Pressable onPress={() => setType("Xbox")}>
                             <FontAwesome
                                 name="circle"
                                 size={26}
-                                color={type === "Bi-Sexual" ? "black" : "gray"}
+                                color={type === "Xbox" ? "black" : "gray"}
                             />
 
                         </Pressable>

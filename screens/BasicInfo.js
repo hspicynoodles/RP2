@@ -13,14 +13,21 @@ const BasicInfo = () => {
                     fontWeight: "bold",
                     fontFamily: "GeezaPro-Bold",
                     marginLeft: 20,
-                }}>You're one of a kind.</Text>
+                }}>Life is short</Text>
                 <Text style={{
                     fontSize: 32,
                     fontWeight: "bold",
                     fontFamily: "GeezaPro-Bold",
                     marginLeft: 20,
                     marginTop: 10
-                }}>Your profile should be too.</Text>
+                }}>Play more games</Text>
+                <Text style={{
+                    fontSize: 32,
+                    fontWeight: "bold",
+                    fontFamily: "GeezaPro-Bold",
+                    marginLeft: 20,
+                    marginTop: 10
+                }}>And find your player 2</Text>
             </View>
             <View>
 
@@ -39,7 +46,7 @@ const BasicInfo = () => {
             <Pressable
                 onPress={() => navigation.navigate("Name")}
                 style={{
-                    backgroundColor: "#FF5864",
+                    backgroundColor: "#8db0f7ff",
                     padding: 15, marginTop: "auto"
                 }}>
                 <Text

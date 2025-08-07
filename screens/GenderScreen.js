@@ -60,7 +60,6 @@ const GenderScreen = () => {
                     />
                 </View>
                 <Text style={{ fontSize: 25, fontWeight: "bold", fontFamily: "GeezaPro-Bold", marginTop: 15 }}>Which gender describes you best?</Text>
-                <Text style={{ marginTop: 20, fontSize: 15, color: "gray" }}>Hinge users are matched based on these three gender groups. You can add more about your gender identity if you'd like.</Text>
 
                 <View style={{ marginTop: 30 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>

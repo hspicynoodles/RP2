@@ -34,7 +34,7 @@ const PhotoScreen = () => {
 
     const handleNext = () => {
         saveRegistrationProcess('Photos', { imageUrls });
-        navigation.navigate("Prompts");
+        navigation.navigate("PreFinal");
     }
 
     return (

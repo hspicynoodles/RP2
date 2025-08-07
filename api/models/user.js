@@ -35,36 +35,12 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    location: {
-        type: String,
-        required: true
-    },
     datingPreferences: [
         {
             type: String,
         },
     ],
-    lookingFor: {
-        type: String,
-        required: true
-    },
-    imageUrls: [
-        {
-            type: String
-        },
-    ],
-    prompts: [
-        {
-            question: {
-                type: String,
-                required: true
-            },
-            answer: {
-                type: String,
-                required: true
-            },
-        }
-    ],
+
     likedProfiles: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -100,3 +76,5 @@ const userSchema = new Schema({
         }
     ]
 });
+
+module.exports = mongoose.model("User", userSchema);

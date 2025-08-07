@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Pressable, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Pressable, TextInput, Button, BackHandler } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
@@ -10,26 +10,26 @@ import { ModalContent } from 'react-native-modals';
 
 const ShowPromptsScreen = () => {
     const navigation = useNavigation();
-    const [prompt, setPrompt] = useState([]);
+    const [prompt, setPrompts] = useState([]);
     const [option, setOption] = useState('About me');
     const [answer, setAnswer] = useState('');
     const [question, setQuestion] = useState('');
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
     const addPrompt = () => {
         const newPrompt = { question, answer };
-        setPrompt([...prompt, newPrompt]);
+        setPrompts([...prompts, newPrompt]);
         setQuestion("");
         setAnswer("");
-        setIsModalVisible(false);
-        if (prompts.length == 3) {
-            setIsModalVisible(false);
+        setModalVisible(false);
+        if (prompt.length == 3) {
+            setModalVisible(false);
             navigation.navigate("Prompts", {
-                prompts: prompts
+                prompt: prompt
             })
         }
     }
     const openModal = item => {
-        setIsModalVisible(!isModalVisible);
+        setModalVisible(!isModalVisible);
         setQuestion(item?.question);
     }
     const prompts = [
@@ -100,14 +100,14 @@ const ShowPromptsScreen = () => {
                 </View>
                 <View style={{ marginHorizontal: 10, marginTop: 20, flexDirection: "row", gap: 10 }}>
                     {prompts.map((item, index) => (
-                        <>
-                            <View key={index} >
-                                <Pressable
-                                    onPress={() => setOption(item?.name)}
-                                    style={{ padding: 10, borderRadius: 20, backgroundColor: option == item?.name ? "#581545" : "white" }}>
-                                    <Text style={{ textAlign: "center", color: option == item?.name ? "white" : "black" }}>{item?.name}</Text>
-                                </Pressable>
-                            </View></>
+
+                        <View key={index}>
+                            <Pressable
+                                onPress={() => setOption(item?.name)}
+                                style={{ padding: 10, borderRadius: 20, backgroundColor: option == item?.name ? "#581545" : "white" }}>
+                                <Text style={{ textAlign: "center", color: option == item?.name ? "white" : "black" }}>{item?.name}</Text>
+                            </Pressable>
+                        </View>
                     ))}
                 </View>
                 <View style={{ marginTop: 20, marginHorizontal: 12 }}>
@@ -129,8 +129,8 @@ const ShowPromptsScreen = () => {
 
             </SafeAreaView>
             <BottomModal
-                onBackDropPress={() => setIsModalVisible(!isModalVisible)}
-                onHardwareBackPress={() => setIsModalVisible(!isModalVisible)}
+                onBackDropPress={() => setModalVisible(!isModalVisible)}
+                onHardwareBackPress={() => setModalVisible(!isModalVisible)}
                 swipeDirection={['up', 'down']}
                 swipeThreshold={200}
                 modalTitle={<ModalTitle title="Answer the question" />}
@@ -139,14 +139,14 @@ const ShowPromptsScreen = () => {
                         slideFrom: 'bottom',
                     })}
                 visible={isModalVisible}
-                onTouchOutside={() => setIsModalVisible(!isModalVisible)}>
+                onTouchOutside={() => setModalVisible(!isModalVisible)}>
                 <ModalContent style={{ width: "100%", height: 250 }}>
                     <View style={{ marginVertical: 10 }}>
                         <Text style={{ textAlign: "center", fontWeight: "600", fontSize: 15 }}>Answer your question</Text>
-                        <Text style={{ marginTop: 15, fontSize: 20, fontWeight: "600" }}> {question}</Text>
+                        <Text style={{ marginTop: 15, fontSize: 20, fontWeight: "600" }}>{question}</Text>
                     </View>
                     <View style={{ borderColor: "#202020", borderWidth: 1, padding: 10, borderRadius: 10, height: 100, marginVertical: 12, borderStyle: "dashed" }}>
-                        <TextInput style={{ color: "gray", width: 300, fontSize: answer ? 18 : 18 }} value={answer} onChangeText={(text) => setAnswer(text)}
+                        <TextInput style={{ color: "gray", width: 300, fontSize: answer ? 18 : 18 }} value={answer} onChangeText={text => setAnswer(text)}
                             placeholder='Enter your answer' />
                     </View>
                     <Button onPress={addPrompt} title="Add prompt" />

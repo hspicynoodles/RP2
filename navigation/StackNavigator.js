@@ -20,7 +20,7 @@ import LookingForScreen from "../screens/LookingFor"
 import HometownScreen from "../screens/HomeTownScreen"
 import PhotoScreen from "../screens/PhotoScreen"
 import PromptsScreen from "../screens/PromptsScreen"
-import PromptShowScreen from "../screens/ShowPromptsScreen"
+//import PromptShowScreen from "../screens/ShowPromptsScreen"
 import PreFinalScreen from "../screens/PreFinalScreen"
 
 //React Navigation imports
@@ -31,7 +31,7 @@ import { Ionicons } from "@expo/vector-icons"
 import { NavigationContainer } from "@react-navigation/native"
 import NameScreen from "../screens/NameScreen"
 import TypeScreen from "../screens/TypeScreen"
-import ShowPromptsScreen from "../screens/ShowPromptsScreen"
+//import ShowPromptsScreen from "../screens/ShowPromptsScreen"
 import { AuthContext } from "../AuthContext"
 
 
@@ -175,16 +175,6 @@ const StackNavigator = () => {
                 <Stack.Screen
                     name="Photos"
                     component={PhotoScreen}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Prompts"
-                    component={PromptsScreen}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="ShowPrompts"
-                    component={ShowPromptsScreen}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen

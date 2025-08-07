@@ -40,7 +40,7 @@ app.listen(port, () => {
 });
 
 //import the Mongoose User Model used to create/save users in the database
-const User = require("./models/user");
+const User = require('./models/user'); // ✅ use correct file name AND path casing (important on some systems)
 
 // sets up a POST route in register i.e when someone tries to register handle their data here 
 app.post("/register", async (req, res) => {
@@ -61,5 +61,85 @@ app.post("/register", async (req, res) => {
     } catch (error) {
         console.log("Error creating user", error);
         res.status(500).json({ error: "Internal server error" })
+    }
+})
+
+// fetch the users data from database 
+app.get("user/:userId", async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId); // find the user by ID and exclude password from the response
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json({ user })
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching the user details." });
+    }
+});
+
+//endpoint to login in
+app.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+        if (user.password !== password) {
+            return res.status(401).json({ message: "Invalid password." });
+        }
+        const secretKey = crypto.randomBytes(32).toString("hex"); // creates a random 32 byte string used for encryption 
+
+        const token = jwt.sign({ userId: user._id }, secretKey);
+
+        // send the token back to the client
+        return res.status(200).json({ token });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error logging in user." });
+    }
+})
+
+//matches 
+app.get("/matches", async (req, res) => {
+    try {
+        const { userId } = req.query;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        };
+        let filter = {};
+        if (user.gender === 'Men') {
+            filter.gender = 'Women';
+        } else if (user.gender == 'Women') {
+            filter.gender = 'Men';
+        }
+
+        let query = {
+            _id: { $ne: userId },
+        };
+        if (user.type) {
+            filter.type = user.type;
+        };
+
+        // find current user in MongoDB and populate the likedProfiles and matches 
+        const currentUser = await User.findById(userId).populate("matches", "_id").populate("likedProfiles", "_id");
+        const friendsIds = currentUser.matches.map((friend) => friend._id);
+
+        //liked profiles that the user has liked but not matched with 
+        const crushIds = currentUser.likedProfiles.map((crush) => crush._id);
+
+        // find all users that match the filter where the _id is not the current user or their friends or crushes
+        // so we can see new matches
+        const matches = await User.find(filter).where('_id').nin([userId, ...friendsIds, ...crushIds]);
+
+
+        //return the matches to the client
+        return res.status(200).json({ matches });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching matches." });
     }
 })

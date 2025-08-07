@@ -8,6 +8,7 @@ import { TouchableOpacity } from 'react-native';
 import { saveRegistrationProcess } from '../registrationUtils';
 import { useEffect } from 'react';
 import { getRegistrationProgress } from '../registrationUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -35,13 +36,7 @@ const BirthScreen = () => {
     const handleYearChange = (text) => {
         setYear(text);
     }
-    const handleNext = () => {
-        if (day.trim() !== '' && month.trim() !== '' && year.trim() !== '') {
-            const dateOfBirth = '${day}/${month}/${year}';
-            saveRegistrationProcess('Birth', { dateOfBirth });
-        }
-        navigation.navigate("Location");
-    }
+
 
     // when the screen loads check if the user already saved their birthday, if yes split it in 
     // day, month and year and set the state variables 
@@ -57,6 +52,20 @@ const BirthScreen = () => {
             }
         })
     }, [])
+
+    const handleNext = () => {
+        if (day.trim() === '' || month.trim() === '' || year.trim() === '') {
+            alert("Please fill in your full birth date.");
+            return;
+        }
+
+        const dateOfBirth = `${day}/${month}/${year}`;
+        saveRegistrationProcess('Birth', { dateOfBirth });
+        console.log("🎂 DOB saved:", dateOfBirth);
+
+        navigation.navigate("Gender");
+
+    }
 
 
     return (
@@ -94,8 +103,8 @@ const BirthScreen = () => {
                 <View style={{ flexDirection: "row", gap: 10, marginTop: 80, justifyContent: 'center' }}>
 
                     <TextInput ref={dayRef} autoFocus={true} placeholder="DD" maxLength={2} keyboardType='numeric' value={day} onChangeText={handleDayChange} style={{ borderBottomWidth: 1, borderColor: "black", padding: 10, width: 60, fontSize: day ? 22 : 22, fontFamily: "GeezaPro-Bold", }} />
-                    <TextInput ref={monthRef} autoFocus={true} placeholder="MM" maxLength={2} keyboardType='numeric' value={month} onChangeText={handleMonthChange} style={{ borderBottomWidth: 1, borderColor: "black", padding: 10, width: 60, fontSize: month ? 22 : 22, fontFamily: "GeezaPro-Bold", }} />
-                    <TextInput ref={yearRef} autoFocus={true} placeholder="YYYY" maxLength={4} keyboardType='numeric' value={year} onChangeText={handleYearChange} style={{ borderBottomWidth: 1, borderColor: "black", padding: 10, width: 80, fontSize: year ? 22 : 22, fontFamily: "GeezaPro-Bold", }} />
+                    <TextInput ref={monthRef} autoFocus={false} placeholder="MM" maxLength={2} keyboardType='numeric' value={month} onChangeText={handleMonthChange} style={{ borderBottomWidth: 1, borderColor: "black", padding: 10, width: 60, fontSize: month ? 22 : 22, fontFamily: "GeezaPro-Bold", }} />
+                    <TextInput ref={yearRef} autoFocus={false} placeholder="YYYY" maxLength={4} keyboardType='numeric' value={year} onChangeText={handleYearChange} style={{ borderBottomWidth: 1, borderColor: "black", padding: 10, width: 80, fontSize: year ? 22 : 22, fontFamily: "GeezaPro-Bold", }} />
 
                 </View>
                 <TouchableOpacity onPress={handleNext} activeOpacity={0.8} style={{ marginTopp: 30, marginLeft: "auto" }}>

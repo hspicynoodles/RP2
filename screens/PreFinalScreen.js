@@ -7,6 +7,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
+
 const PreFinalScreen = () => {
 
     // fetching user registration data from different screens and storing it all in one object called userData 
@@ -16,15 +17,19 @@ const PreFinalScreen = () => {
     const [userData, setUserData] = useState();
     // useContext(AuthContext) pulls in data from the AuthContext 
     // token is used for authentication and setToken to update if needed
-    const [token, setToken] = useContext(AuthContext);
+    const { token, setToken } = useContext(AuthContext); // ✅
     const navigation = useNavigation();
     // run this when the screen loads 
     useEffect(() => {
-        navigation.replace("MainStack", { screen: "Main" })
+        if (token) {
+            navigation.replace("MainStack", { screen: "Main" })
+        }
     }, [token])
+
     useEffect(() => {
         getAllUserData();
     }, []);
+
     //async means the function can use await to pause and wait for things 
     // and then create an array called screens with all the screen names in reg flow
     const getAllUserData = async () => {
@@ -34,14 +39,8 @@ const PreFinalScreen = () => {
                 'Email',
                 'Password',
                 'Birth',
-                'Location',
                 'Gender',
                 'Type',
-                'Dating',
-                'LookingFor',
-                'Hometown',
-                'Photos',
-                'Prompts',
             ];
             // build userData object , first its empty 
             let userData = {};
@@ -58,7 +57,7 @@ const PreFinalScreen = () => {
             };
             setUserData(userData)
         } catch (error) {
-
+            console.log('Error', error);
         }
     };
     const clearAllScreenData = async () => {
@@ -68,14 +67,9 @@ const PreFinalScreen = () => {
                 'Email',
                 'Password',
                 'Birth',
-                'Location',
                 'Gender',
                 'Type',
-                'Dating',
-                'LookingFor',
-                'Hometown',
-                'Photos',
-                'Prompts',
+
             ];
             for (const screenName of screens) {
                 const key = `registration_progress_${screenName}`;
@@ -83,23 +77,26 @@ const PreFinalScreen = () => {
             };
             console.log("All screen data cleared!")
         } catch (error) {
+            console.log('Error', error);
 
         }
     }
+
     const registerUser = async () => {
         try {
-            const response = await axios.post("http://localhost:3000/register", userData).then((response) => {
-                console.log(response);
-                const token = response.data.token;
-                AsyncStorage.setItem("token", token);
-                setToken(token);
-            });
+            const response = await axios.post("http://192.168.1.174:3000/register", userData);
+            const token = response.data.token;
+
+            await AsyncStorage.setItem("token", token);
+            setToken(token); // this triggers NavigationContainer to switch to MainStack
 
             clearAllScreenData();
         } catch (error) {
-            console.log("Error", error);
+            console.log("Registration Error:", error.response?.data || error.message);
         }
-    }
+    };
+
+
     console.log("Data", userData);
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>

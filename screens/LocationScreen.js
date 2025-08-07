@@ -7,6 +7,7 @@ import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { saveRegistrationProcess } from '../registrationUtils';
+import { GOOGLE_MAPS_API_KEY } from '@env';
 
 //Ask the user permission to access their location
 // Get the user's current GPS coords
@@ -51,7 +52,7 @@ const LocationScreen = () => {
                 ...prev, latitude, longitude
             }));
             // send request to Google Maps API to convert the coordinates to a human-readable address
-            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=YOUR_GOOGLE_MAPS_API_KEY`);
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`);
             const data = await response.json();
 
 
@@ -64,7 +65,7 @@ const LocationScreen = () => {
     console.log("location", location);
 
     const handleMarkerDragEnd = coordinate => {
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate.latitude},${coordinate.longitude}&key=YOUR_GOOGLE_MAPS_API_KEY`).then(response => response.json()).then(data => {
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate.latitude},${coordinate.longitude}&key=${GOOGLE_MAPS_API_KEY}`).then(response => response.json()).then(data => {
             console.log("New location", data);
             if (data.results.length > 0) {
 

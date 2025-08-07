@@ -50,7 +50,7 @@ const NameScreen = () => {
                         borderColor: "black",
                     }}>
                         <MaterialCommunityIcons
-                            name="newspaper-variant-outline"
+                            name="gamepad-variant-outline"
                             size={26}
                             color="black"
                         />
@@ -88,7 +88,7 @@ const NameScreen = () => {
                         autoFocus={true}
                         value={lastName}
                         onChangeText={(text) => setLastName(text)}
-                        placeholder='Last Name(required)'
+                        placeholder='Last Name'
                         placeholderTextColor="gray"
                         style={{
                             width: 340,
@@ -105,7 +105,7 @@ const NameScreen = () => {
                         style={{ alignSelf: "center", marginTop: 20 }}
                         name="arrow-right-circle"
                         size={26}
-                        color="#581845"
+                        color="#1755b2ff"
                     />
 
                 </TouchableOpacity>
